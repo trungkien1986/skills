@@ -1,6 +1,6 @@
 # Choosing Your Test Strategy
 
-The TDD skill defaults to integration-style tests through public interfaces. But one size doesn't fit all. Use this guide to pick the right strategy.
+The TDD skill supports both integration tests and unit tests. Use this guide to pick the right strategy for each case.
 
 ## The Decision Framework
 
@@ -16,7 +16,7 @@ Ask these questions in order:
 
 3. **Is the logic complex enough that pinpointing the exact failure location matters?**
    - Yes → Unit test the pure logic
-   - No → Integration test at the nearest public seam
+   - No → Integration test at the nearest public API (the module's documented interface that callers depend on)
 
 ## When Unit Tests Shine
 
@@ -64,7 +64,7 @@ More unit ←——————————————————————�
 
 | Trap | Why it happens | Fix |
 |---|---|---|
-| Mocking everything | Fear of slowness | Start with real deps, mock only what's slow/flaky |
+| Mocking everything | Fear of slowness | Start with real deps, mock only at system boundaries (see mocking.md) |
 | Testing only internals | Module has no good public interface | Design the interface first, then test it |
 | One huge e2e test | Trying to verify everything at once | Split into vertical slices |
 | No unit tests at all | "Integration tests cover it" | Unit test the complex pure logic anyway |

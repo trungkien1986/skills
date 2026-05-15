@@ -1,3 +1,9 @@
+---
+name: setup-global
+description: Write a global fallback config to ~/.claude/agent-skills/. New repos inherit it automatically — only create repo-level docs/agents/ when you need to override something. Run once per machine.
+disable-model-invocation: true
+---
+
 # Setup Global Defaults
 
 Create a global fallback config that all repos inherit. Repos only need `docs/agents/` for overrides.
@@ -6,15 +12,21 @@ Create a global fallback config that all repos inherit. Repos only need `docs/ag
 
 ### 1. Read the templates
 
-The source templates live in `templates/agents/` relative to this skill repo. Read them.
+Read the template files from `templates/agents/`:
+
+- `issue-tracker-github.md` — GitHub issue tracker conventions
+- `triage-labels.md` — standard canonical label mapping
+- `domain.md` — default single-context layout + inheritance rules
 
 ### 2. Write to global location
 
-Create `~/.claude/agent-skills/` and write:
+Create `~/.claude/agent-skills/` if it doesn't exist. Then write:
 
-- `~/.claude/agent-skills/issue-tracker.md` — GitHub conventions (covers 95% of repos)
+- `~/.claude/agent-skills/issue-tracker.md` — copy from the GitHub template (covers 95% of repos)
 - `~/.claude/agent-skills/triage-labels.md` — standard canonical labels
 - `~/.claude/agent-skills/domain.md` — default single-context layout
+
+**If `~/.claude/agent-skills/` already exists**, warn the user before overwriting any files. Show a diff-like summary of what would change, and ask for confirmation. Never silently overwrite global config that may have been customized.
 
 ### 3. Update repo configs to be minimal
 

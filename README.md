@@ -30,14 +30,19 @@ If you want to keep up with changes to these skills, and any new ones I create, 
 npx skills@latest add mattpocock/skills
 ```
 
-2. Pick the skills you want, and which coding agents you want to install them on. **Make sure you select `/setup-matt-pocock-skills`**.
+2. Pick the skills you want, and which coding agents you want to install them on. **Make sure you select `/setup-auto`** for a fast, no-interview setup, or `/setup-matt-pocock-skills` if you need a custom configuration.
 
-3. Run `/setup-matt-pocock-skills` in your agent. It will:
-   - Ask you which issue tracker you want to use (GitHub, Linear, or local files)
-   - Ask you what labels you apply to ticks when you triage them (`/triage` uses labels)
-   - Ask you where you want to save any docs we create
+3. (Alternative) Set up config once for ALL repos:
 
-4. Bam - you're ready to go.
+```
+/setup-global
+```
+
+This writes defaults to `~/.claude/agent-skills/`. Every new repo inherits them — zero per-repo setup.
+
+4. Run `/setup-auto` in your agent for a fast setup, or `/setup-matt-pocock-skills` for a custom interview. For most repos, `/setup-auto` is all you need.
+
+5. Bam - you're ready to go.
 
 ## Why These Skills Exist
 
@@ -154,8 +159,8 @@ Skills I use daily for code work.
 - **[setup-auto](./skills/engineering/setup-auto/SKILL.md)** — One-shot auto-setup. Detects your issue tracker from git remotes and scaffolds config with sensible defaults — no interview needed. Perfect for new projects or when you just want the standard setup fast.
 - **[setup-global](./skills/engineering/setup-global/SKILL.md)** — Write a global fallback config to `~/.claude/agent-skills/`. New repos inherit it automatically — only create repo-level `docs/agents/` when you need to override something. Run once per machine.
 - **[tdd](./skills/engineering/tdd/SKILL.md)** — Test-driven development with a red-green-refactor loop. Builds features or fixes bugs one vertical slice at a time.
-- **[to-issues](./skills/engineering/to-issues/SKILL.md)** — Break any plan, spec, or PRD into independently-grabbable GitHub issues using vertical slices.
-- **[to-prd](./skills/engineering/to-prd/SKILL.md)** — Turn the current conversation context into a PRD and submit it as a GitHub issue. No interview — just synthesizes what you've already discussed.
+- **[to-issues](./skills/engineering/to-issues/SKILL.md)** — Break any plan, spec, or PRD into independently-grabbable issues using vertical slices.
+- **[to-prd](./skills/engineering/to-prd/SKILL.md)** — Turn the current conversation context into a PRD and submit it to the project issue tracker. No interview — just synthesizes what you've already discussed.
 - **[zoom-out](./skills/engineering/zoom-out/SKILL.md)** — Tell the agent to zoom out and give broader context or a higher-level perspective on an unfamiliar section of code.
 - **[prototype](./skills/engineering/prototype/SKILL.md)** — Build a throwaway prototype to flesh out a design — either a runnable terminal app for state/business-logic questions, or several radically different UI variations toggleable from one route.
 

@@ -18,11 +18,18 @@ git -C "$SKILLS_DIR" fetch upstream 2>/dev/null
 
 # Determine last sync point
 if [ -f "$SYNC_FILE" ]; then
-  LAST_SYNC=$(cat "$SYNC_FILE")
-  echo "Last synced from upstream at: $LAST_SYNC"
+  LAST_SYNC=$(grep -v '^#' "$SYNC_FILE" | head -1)
+  # Validate the hash exists in the repo
+  if git -C "$SKILLS_DIR" cat-file -e "$LAST_SYNC" 2>/dev/null; then
+    echo "Last synced from upstream at: $LAST_SYNC"
+  else
+    echo "Warning: .skill-sync contains invalid hash '$LAST_SYNC'. Falling back to merge-base."
+    LAST_SYNC=$(git -C "$SKILLS_DIR" merge-base HEAD upstream/main 2>/dev/null || echo "HEAD")
+    echo "Using: ${LAST_SYNC:0:7}"
+  fi
 else
   # Fall back to fork point (merge base)
-  LAST_SYNC=$(git -C "$SKILLS_DIR" merge-base HEAD upstream/main)
+  LAST_SYNC=$(git -C "$SKILLS_DIR" merge-base HEAD upstream/main 2>/dev/null || echo "HEAD")
   echo "No .skill-sync file found. Using merge base: ${LAST_SYNC:0:7}"
 fi
 
@@ -50,5 +57,19 @@ else
 fi
 
 echo ""
-echo "To sync: git merge upstream/main"
-echo "To update sync marker after merge: echo \$(git -C \"$SKILLS_DIR\" rev-parse upstream/main) > \"$SYNC_FILE\""
+echo "=== Sync advice ==="
+echo ""
+echo "Simple case (your customizations won't conflict):"
+echo "  git merge upstream/main"
+echo ""
+echo "Files with custom changes may conflict (see above). Better than 'git checkout upstream/main --':"
+echo "  git merge upstream/main           # merge, then resolve conflicts file-by-file"
+echo "  # OR, for specific files:"
+echo "  git diff upstream/main -- skills/engineering/<name>/  # review changes first"
+echo "  git merge upstream/main           # then merge normally"
+echo ""
+echo "WARNING: Do NOT use 'git checkout upstream/main -- <dir>/' on customized directories."
+echo "It deletes new files you added (like test-strategy.md in tdd/). Always merge, don't replace."
+echo ""
+echo "After syncing, update the sync marker:"
+echo "  git rev-parse upstream/main > \"$SYNC_FILE\""

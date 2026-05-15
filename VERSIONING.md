@@ -31,14 +31,29 @@ git push origin main
 
 ### Customized skills with conflicts
 
-If you've heavily modified a skill that also changed upstream, merge the upstream changes selectively:
+If you've heavily modified a skill that also changed upstream, **merge — don't replace**:
 
 ```bash
 git fetch upstream
-git checkout upstream/main -- skills/engineering/<skill-name>/
-# Review the diff, re-apply your customizations
-git diff --cached
-git commit -m "Sync <skill-name> from upstream, re-apply customizations"
+git merge upstream/main
+# Resolve conflicts in customized files manually.
+# Merging preserves your new files (e.g. test-strategy.md),
+# unlike 'git checkout upstream/main -- <dir>/' which deletes them.
+```
+
+For a specific file, review upstream changes before merging:
+
+```bash
+git diff upstream/main -- skills/engineering/<skill-name>/SKILL.md
+git merge upstream/main
+# Resolve any conflicts, re-apply customizations if needed
+```
+
+Then update the sync marker and push:
+
+```bash
+git rev-parse upstream/main > .skill-sync
+git push origin main
 ```
 
 ## Which skills you own
@@ -49,8 +64,12 @@ Skills you've created or significantly modified (your customizations take priori
 |-------|--------|-------|
 | `/setup-auto` | Custom | Your creation — no upstream equivalent |
 | `/setup-global` | Custom | Your creation — no upstream equivalent |
-| `/grill-with-docs` | Modified | ADR criteria relaxed (3-tier instead of all-or-nothing) |
-| `/tdd` | Modified | Added unit test strategy alongside integration tests |
-| `templates/` | Custom | Template config for auto-setup |
+| `/grill-with-docs` | Modified | ADR criteria relaxed (3-tier instead of all-or-nothing), ADR-FORMAT.md updated |
+| `/tdd` | Modified | Added `test-strategy.md`, updated philosophy to include unit tests |
+| `templates/` | Custom | Agent config templates for auto-setup |
+| `scripts/` | Custom | `check-upstream-updates.sh` for version tracking |
+| `VERSIONING.md` | Custom | This file |
+| `TEMPLATES.md` | Custom | Template inventory and sync strategy |
+| `.skill-sync` | Custom | Upstream sync marker |
 
 Everything else tracks upstream directly. If Matt rewrites a skill you haven't touched, just merge it.

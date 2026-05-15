@@ -1,1 +1,10 @@
+# Upstream sync marker
+# Last synced from: https://github.com/mattpocock/skills
+# Date: 2026-05-15
+# Customizations applied on top (see VERSIONING.md for details):
+#   - Added /setup-auto, /setup-global skills
+#   - Modified grill-with-docs ADR criteria (3-tier system)
+#   - Modified tdd (added test-strategy.md, balanced philosophy)
+#   - Added templates/, scripts/, VERSIONING.md, TEMPLATES.md
+# To check for updates: bash scripts/check-upstream-updates.sh
 e74f0061bb67222181640effa98c675bdb2fdaa7
