@@ -75,14 +75,23 @@ When a term is resolved, update `CONTEXT.md` right there. Don't batch these up �
 
 `CONTEXT.md` should be totally devoid of implementation details. Do not treat `CONTEXT.md` as a spec, a scratch pad, or a repository for implementation decisions. It is a glossary and nothing else.
 
-### Offer ADRs sparingly
+### Offer ADRs
 
-Only offer to create an ADR when all three are true:
+Use this checklist to decide whether to create an ADR and at what severity:
 
 1. **Hard to reverse** — the cost of changing your mind later is meaningful
 2. **Surprising without context** — a future reader will wonder "why did they do it this way?"
 3. **The result of a real trade-off** — there were genuine alternatives and you picked one for specific reasons
 
-If any of the three is missing, skip the ADR. Use the format in [ADR-FORMAT.md](./ADR-FORMAT.md).
+| Criteria met | Severity | Action |
+|---|---|---|
+| 3/3 | **Critical** | Always write. These are the load-bearing decisions. |
+| 2/3 | **Important** | Write unless the decision is obvious to anyone with domain knowledge. |
+| 1/3 | **Noteworthy** | Offer it: "This only hits one ADR criterion — worth recording anyway?" Let the user decide. |
+| 0/3 | — | Skip. |
+
+**When in doubt, write it.** The cost of an unnecessary ADR is a few paragraphs of prose. The cost of a missing ADR is a future team re-litigating the same trade-off from scratch — or worse, reversing a decision without understanding why it was made.
+
+Use the format in [ADR-FORMAT.md](./ADR-FORMAT.md).
 
 </supporting-info>
